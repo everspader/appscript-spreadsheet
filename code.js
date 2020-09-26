@@ -13,6 +13,8 @@ function initMenu() {
 function loadForm() {
   const template = HtmlService.createTemplateFromFile("uform_bootstrap");
   const html = template.evaluate();
+  html.setTitle("New Appointment")
+
   //SpreadsheetApp.getUi().showModelessDialog(html, "Novo Agendamento")
   SpreadsheetApp.getUi().showSidebar(html)
 }
