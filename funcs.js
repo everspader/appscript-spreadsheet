@@ -8,11 +8,20 @@ function appendData(data) {
     data.city,
     data.company,
     data.email,
-    data.date
+    data.date,
+    data.phoneNumber,
+    data.comments,
   ]);
 
   return true;
 
+}
+
+function appendColumsn() {
+  const ws = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("MySheet");
+  var lastCol = sheet.getLastColumn();
+
+  ws.insertColumns(lastCol+1, 3);
 }
 
 function getDropdownArray() {
