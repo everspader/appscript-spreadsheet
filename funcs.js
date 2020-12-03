@@ -27,6 +27,6 @@ function appendColumsn() {
 function getDropdownArray() {
   const ws = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Aux");
 
-  return ws.getRange(2, 1, ws.getLastRow() - 1, 2).getValues();
+  return ws.getRange(2, 1, ws.getLastRow() - 1, 3).getValues();
 
 }
