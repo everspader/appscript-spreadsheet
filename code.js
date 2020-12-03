@@ -6,15 +6,14 @@ function initMenu() {
   var ui = SpreadsheetApp.getUi();
   var menu = ui.createMenu("Other");
 
-  menu.addItem("Criar Agendamento", "loadForm");
+  menu.addItem("Load Form", "loadForm");
   menu.addToUi();
 }
 
 function loadForm() {
-  const template = HtmlService.createTemplateFromFile("uform_bootstrap");
+  const template = HtmlService.createTemplateFromFile("userForm");
   const html = template.evaluate();
-  html.setTitle("New Appointment")
+  html.setTitle("New Entry")
 
-  //SpreadsheetApp.getUi().showModelessDialog(html, "Novo Agendamento")
   SpreadsheetApp.getUi().showSidebar(html)
 }
