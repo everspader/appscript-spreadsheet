@@ -61,29 +61,41 @@
         </div>
       </div>
       <div class="form-group">
-        <label for="email">Email</label>
-        <input type="email" class="form-control form-control-sm" id="email" required>
+        <label for="quantity">Quantity</label>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">@</span>
+          </div>
+          <input type="number" class="form-control form-control-sm" id="quantity" required>
+        </div>
         <div class="invalid-feedback">
-          Please enter a valid e-mail.
+          Please enter a valid quantity.
         </div>
       </div>
       <div class="form-group">
-        <label for="date">Date</label>
-        <input type="date" class="form-control form-control-sm" id="date" required>
+        <label for="dateEntered">Date Entered</label>
+        <input type="date" class="form-control form-control-sm" id="dateEntered" required>
         <div class="invalid-feedback">
           Please select a valid date.
         </div>
       </div>
       <div class="form-group">
+        <label for="dateReceived">Date Received</label>
+        <input type="date" class="form-control form-control-sm" id="dateReceived" required>
+        <div class="invalid-feedback">
+          Please select a valid date.
+        </div>
+      </div>
+      <!-- <div class="form-group">
         <label for="phone-number">Phone Number</label>
-        <input type="text" class="form-control form-control-sm" id="phone-number" pattern="^\d{4}-\d{4}$"> <!-- regex pattern-->
+        <input type="text" class="form-control form-control-sm" id="phone-number" pattern="^\d{4}-\d{4}$">
         <div class="invalid-feedback">
           Please enter a valid phone number
         </div>
-      </div>
+      </div> -->
       <div class="form-group">
         <label for="comments">Comments</label>
-        <textarea class="form-control" id="comments" rows="3" required minlength="5" maxlength="100"></textarea>
+        <textarea class="form-control" id="comments" rows="3" maxlength="100"></textarea>
       </div>
       <button id="btn-submit" class="btn btn-dark btn-dark-sm">Submit</button>
     </div>
@@ -141,18 +153,20 @@
           var itemCategory = document.getElementById('item-category');
           var itemName = document.getElementById('item-name');
           var itemType = document.getElementById('item-type');
-          var emailInput = document.getElementById('email');
-          var dateInput = document.getElementById('date');
-          var phoneNumberInput = document.getElementById('phone-number');
+          var quantity = document.getElementById('quantity');
+          var dateEntered = document.getElementById('dateEntered');
+          var dateReceived = document.getElementById('dateEntered');
+          // var phoneNumberInput = document.getElementById('phone-number');
           var commentsText = document.getElementById('comments');
           var data = {
             name: nameInput.value,
             itemCategory: itemCategory.value,
             itemName: itemName.value,
             itemType: itemType.value,
-            email: emailInput.value,
-            date: dateInput.value,
-            phoneNumber: phoneNumberInput.value,
+            quantityt: quantity.value,
+            dateEntered: dateEntered.value,
+            dateReceived: dateReceived.value,
+            // phoneNumber: phoneNumberInput.value,
             comments: commentsText.value,
             };
           google.script.run.withSuccessHandler(afterSubmit).appendData(data);
@@ -164,7 +178,7 @@
 
       function afterSubmit(e) {
         clearFields([
-          'name', 'item-category', 'item-name', 'item-type', 'email', 'date', 'phone-number', 'comments'
+          'name', 'item-category', 'item-name', 'item-type', 'quantity', 'dateEntered', 'dateReceived', 'comments'
         ]);
 
         $('#success-notification').toast('show')
@@ -229,8 +243,8 @@
 
       function afterSecondDropdownChanged(){
         var itemType = document.getElementById("item-type");
-        var category = document.getElementById("item-category").value;
         var itemName = document.getElementById("item-name").value;
+        var category = document.getElementById("item-category").value;
         var filteredArrayOfValues = arrayOfValues.filter(function(r){return r[0] === category && r[1] === itemName});
         addUniqueOptionsToDropdownList(itemType, filteredArrayOfValues, 2)
       }

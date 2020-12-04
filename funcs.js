@@ -5,11 +5,12 @@ function appendData(data) {
 
   ws.appendRow([
     data.name,
-    data.city,
-    data.company,
-    data.email,
-    data.date,
-    data.phoneNumber,
+    data.itemCategory,
+    data.itemName,
+    data.itemType,
+    data.quantity,
+    data.dateEntered,
+    data.dateReceived,
     data.comments,
   ]);
 
@@ -17,16 +18,10 @@ function appendData(data) {
 
 }
 
-function appendColumsn() {
-  const ws = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("MySheet");
-  var lastCol = sheet.getLastColumn();
-
-  ws.insertColumns(lastCol+1, 3);
-}
-
 function getDropdownArray() {
-  const ws = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Aux");
+  const ws = SpreadsheetApp.getActiveSpreadsheet();
+  const ss = ws.getSheetByName("Aux");
 
-  return ws.getRange(2, 1, ws.getLastRow() - 1, 3).getValues();
+  return ss.getRange(2, 1, ws.getLastRow() - 1, 3).getValues();
 
 }
