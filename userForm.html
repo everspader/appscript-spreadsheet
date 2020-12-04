@@ -163,7 +163,7 @@
             itemCategory: itemCategory.value,
             itemName: itemName.value,
             itemType: itemType.value,
-            quantityt: quantity.value,
+            quantity: quantity.value,
             dateEntered: dateEntered.value,
             dateReceived: dateReceived.value,
             // phoneNumber: phoneNumberInput.value,
@@ -249,9 +249,22 @@
         addUniqueOptionsToDropdownList(itemType, filteredArrayOfValues, 2)
       }
 
+      function updateQtyInStock() {
+        var category = document.getElementById("item-category").value;
+        var itemName = document.getElementById("item-name").value;
+        var itemType = document.getElementById("item-type").value;
+
+        google.script.run.withSuccessHandler(afterQtyInStockReturned).getQtyInStock(category, itemName, itemType);
+      }
+
+      function afterQtyInStockReturned(qty) {
+        inStock = document.getElementById('in-stock').textContent = qty;
+      }
+
       document.getElementById('btn-submit').addEventListener('click', afterButtonClick);
       document.getElementById('item-category').addEventListener('change', afterFirstDropdownChanged);
       document.getElementById('item-name').addEventListener('change', afterSecondDropdownChanged);
+      document.getElementById('item-type').addEventListener('change', updateQtyInStock);
       document.addEventListener("DOMContentLoaded", afterSidebarLoads);
 
     </script>
