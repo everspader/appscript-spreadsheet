@@ -64,7 +64,8 @@
         <label for="quantity">Quantity</label>
         <div class="input-group">
           <div class="input-group-prepend">
-            <span class="input-group-text">Stock: <span class="ml-1" id="in-stock">0</span></span>
+            <span class="input-group-text">Stock: <span class="ml-1"><span class="spinner-grow spinner-grow-sm d-none" id="in-stock-spinner" role="status" aria-hidden="true"></span><span id="in-stock">0</span></span></span>
+
           </div>
           <input type="number" class="form-control" id="quantity" required>
           <div class="invalid-feedback">
@@ -247,9 +248,12 @@
         var category = document.getElementById("item-category").value;
         var filteredArrayOfValues = arrayOfValues.filter(function(r){return r[0] === category && r[1] === itemName});
         addUniqueOptionsToDropdownList(itemType, filteredArrayOfValues, 2)
+        updateQtyInStock();
       }
 
       function updateQtyInStock() {
+        document.getElementById("in-stock").classList.add("d-none");
+        document.getElementById("in-stock-spinner").classList.remove("d-none");
         var category = document.getElementById("item-category").value;
         var itemName = document.getElementById("item-name").value;
         var itemType = document.getElementById("item-type").value;
@@ -259,6 +263,8 @@
 
       function afterQtyInStockReturned(qty) {
         inStock = document.getElementById('in-stock').textContent = qty;
+        document.getElementById("in-stock").classList.remove("d-none");
+        document.getElementById("in-stock-spinner").classList.add("d-none");
       }
 
       document.getElementById('btn-submit').addEventListener('click', afterButtonClick);

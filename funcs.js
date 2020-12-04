@@ -26,15 +26,12 @@ function getDropdownArray() {
 
 }
 
-function getQtyInStock() {
-    
-  const category = "Fruits";
-  const itemName = "Apples";
-  const itemType = "Fuji";
+function getQtyInStock(category, itemName, itemType) {
+
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   const ws = ss.getSheetByName("Inventory");
   const data = ws.getRange(2, 1, ws.getLastRow() - 1, 4).getValues();
-  
+
   const filteredData = data.filter(r => r[0] === category && r[1] === itemName && r[2] === itemType);
   return filteredData.length === 0 ? 0 : filteredData.reduce((subtotal, r) => subtotal + r[3], 0);
 }
