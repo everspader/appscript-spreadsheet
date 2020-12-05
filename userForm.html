@@ -7,6 +7,7 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
 
     <title>Hello, world!</title>
     <style>
@@ -98,6 +99,11 @@
         <label for="comments">Comments</label>
         <textarea class="form-control" id="comments" rows="3" maxlength="100"></textarea>
       </div>
+      <div class="form-group">
+        <input id="arrivalTime" type="checkbox" data-toggle="toggle" data-size="small" data-on="Arrived Late" data-off="Arrived on time" data-width="150" data-height="25" data-onstyle="danger">
+      </div>
+
+
       <button id="btn-submit" class="btn btn-dark btn-dark-sm">Submit</button>
     </div>
 
@@ -144,6 +150,7 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
     <script>
       var arrayOfValues;
 
@@ -159,6 +166,9 @@
           var dateReceived = document.getElementById('dateEntered');
           // var phoneNumberInput = document.getElementById('phone-number');
           var commentsText = document.getElementById('comments');
+          var arrivalTime = document.getElementById('arrivalTime');
+          var arrivalTimeValue = arrivalTime.checked ? "Late" : "On Time";
+
           var data = {
             name: nameInput.value,
             itemCategory: itemCategory.value,
@@ -169,9 +179,9 @@
             dateReceived: dateReceived.value,
             // phoneNumber: phoneNumberInput.value,
             comments: commentsText.value,
+            arrival: arrivalTimeValue
             };
           google.script.run.withSuccessHandler(afterSubmit).appendData(data);
-          // google.script.run.withSuccessHandler(afterSubmit).appendColumns();
         } else {
           $('#error-notification').toast('show')
         }
@@ -179,16 +189,21 @@
 
       function afterSubmit(e) {
         clearFields([
-          'name', 'item-category', 'item-name', 'item-type', 'quantity', 'dateEntered', 'dateReceived', 'comments'
+          'name', 'quantity', 'dateEntered', 'dateReceived', 'comments', 'arrivalTime'
         ]);
 
         $('#success-notification').toast('show')
+        updateQtyInStock();
       }
 
       function clearFields(fields) {
         fields.forEach(function(field){
           var el = document.getElementById(field);
-          el.value = "";
+          if (el.type === "checkbox") {
+            $('#' + el.id).bootstrapToggle('off')
+          } else {
+            el.value = "";
+          }
         });
       }
 
