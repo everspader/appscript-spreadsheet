@@ -8,6 +8,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 
     <title>Hello, world!</title>
     <style>
@@ -102,8 +103,12 @@
       <div class="form-group">
         <input id="arrivalTime" type="checkbox" data-toggle="toggle" data-size="small" data-on="Arrived Late" data-off="Arrived on time" data-width="150" data-height="25" data-onstyle="danger">
       </div>
-
-
+      <div class="form-group">
+        <input id="condition" type="checkbox" data-toggle="toggle" data-size="small" data-on="Has issues" data-off="Good condition" data-width="150" data-height="25" data-onstyle="warning">
+      </div>
+      <div class="form-group">
+        <div id="issues"></div>
+      </div>
       <button id="btn-submit" class="btn btn-dark btn-dark-sm">Submit</button>
     </div>
 
@@ -145,6 +150,16 @@
         </div>
       </div>
     </div>
+
+    <template id="inputTemplate">
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="One issue per line...">
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary add-input" type="button"><i class="fa fa-plus"></i></button>
+          <button class="btn btn-outline-secondary remove-input" type="button"><i class="fa fa-minus"></i></button>
+        </div>
+      </div>
+    </template>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
@@ -282,11 +297,33 @@
         document.getElementById("in-stock-spinner").classList.add("d-none");
       }
 
-      document.getElementById('btn-submit').addEventListener('click', afterButtonClick);
-      document.getElementById('item-category').addEventListener('change', afterFirstDropdownChanged);
-      document.getElementById('item-name').addEventListener('change', afterSecondDropdownChanged);
-      document.getElementById('item-type').addEventListener('change', updateQtyInStock);
+      function addInput() {
+        var issues = document.getElementById("issues");
+        var template = document.getElementById("inputTemplate");
+        var copy = template.content.cloneNode(true);
+
+        issues.appendChild(copy);
+      }
+
+      function removeAllInputs() {
+        document.getElementById("issues").innerHTML = "";
+      }
+
+      document.getElementById("btn-submit").addEventListener("click", afterButtonClick);
+      document.getElementById("item-category").addEventListener("change", afterFirstDropdownChanged);
+      document.getElementById("item-name").addEventListener("change", afterSecondDropdownChanged);
+      document.getElementById("item-type").addEventListener("change", updateQtyInStock);
       document.addEventListener("DOMContentLoaded", afterSidebarLoads);
+      $(function() {
+        $('#condition').change(function() {
+          if(this.checked) {
+            addInput();
+          } else {
+            removeAllInputs();
+          }
+        });
+      });
+      document.getElementById("condition").addEventListener("change", addInput);
 
     </script>
   </body>
