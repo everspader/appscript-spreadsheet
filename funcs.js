@@ -12,7 +12,8 @@ function appendData(data) {
     data.dateEntered,
     data.dateReceived,
     data.comments,
-    data.arrival
+    data.arrival,
+    data.issueInputsValue
   ]);
 
   return true;

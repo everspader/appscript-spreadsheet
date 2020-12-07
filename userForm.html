@@ -30,6 +30,10 @@
         padding-top: 10rem;
       }
 
+      .input-line:last-child {
+        margin-bottom: 1rem !important
+      }
+
     </style>
   </head>
   <body>
@@ -152,8 +156,8 @@
     </div>
 
     <template id="inputTemplate">
-      <div class="input-group">
-        <input type="text" class="form-control" placeholder="One issue per line...">
+      <div class="input-group input-line mb-1">
+        <input type="text" class="form-control issue-input" placeholder="Issue..." required>
         <div class="input-group-append">
           <button class="btn btn-outline-secondary add-input" type="button"><i class="fa fa-plus"></i></button>
           <button class="btn btn-outline-secondary remove-input" type="button"><i class="fa fa-minus"></i></button>
@@ -179,10 +183,12 @@
           var quantity = document.getElementById('quantity');
           var dateEntered = document.getElementById('dateEntered');
           var dateReceived = document.getElementById('dateEntered');
-          // var phoneNumberInput = document.getElementById('phone-number');
           var commentsText = document.getElementById('comments');
           var arrivalTime = document.getElementById('arrivalTime');
           var arrivalTimeValue = arrivalTime.checked ? "Late" : "On Time";
+          var issueInputs = document.getElementsByClassName("issue-input");
+
+          var issueInputsValue = issueInputs.length === 0 ? "" : Array.prototype.map.call(issueInputs, function(n){ return n.value }).join(";");
 
           var data = {
             name: nameInput.value,
@@ -192,9 +198,9 @@
             quantity: quantity.value,
             dateEntered: dateEntered.value,
             dateReceived: dateReceived.value,
-            // phoneNumber: phoneNumberInput.value,
             comments: commentsText.value,
-            arrival: arrivalTimeValue
+            arrival: arrivalTimeValue,
+            issueInputsValue: issueInputsValue
             };
           google.script.run.withSuccessHandler(afterSubmit).appendData(data);
         } else {
@@ -204,7 +210,7 @@
 
       function afterSubmit(e) {
         clearFields([
-          'name', 'quantity', 'dateEntered', 'dateReceived', 'comments', 'arrivalTime'
+          'name', 'quantity', 'dateEntered', 'dateReceived', 'comments', 'arrivalTime', 'condition'
         ]);
 
         $('#success-notification').toast('show')
@@ -309,11 +315,24 @@
         document.getElementById("issues").innerHTML = "";
       }
 
+      // "e" inside the function refers to an event that is triggered
+      function afterInputButtonClick(e) {
+        if (e.target.matches(".add-input *, .add-input")) {
+          addInput();
+        } else if (e.target.matches(".remove-input *, .remove-input")) {
+          if(document.getElementsByClassName("input-line").length > 1) {
+            e.target.closest(".input-line").remove();
+          }
+
+        }
+      }
+
       document.getElementById("btn-submit").addEventListener("click", afterButtonClick);
       document.getElementById("item-category").addEventListener("change", afterFirstDropdownChanged);
       document.getElementById("item-name").addEventListener("change", afterSecondDropdownChanged);
       document.getElementById("item-type").addEventListener("change", updateQtyInStock);
-      document.addEventListener("DOMContentLoaded", afterSidebarLoads);
+      document.getElementById("issues").addEventListener("click", afterInputButtonClick);
+
       $(function() {
         $('#condition').change(function() {
           if(this.checked) {
@@ -323,7 +342,8 @@
           }
         });
       });
-      document.getElementById("condition").addEventListener("change", addInput);
+
+      document.addEventListener("DOMContentLoaded", afterSidebarLoads);
 
     </script>
   </body>
