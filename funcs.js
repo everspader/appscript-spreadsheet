@@ -1,7 +1,8 @@
 function appendData(data) {
   //Function to add the data as array to the spreadsheet
 
-  const ws = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Data");
+  const ss = SpreadsheetApp.openById(PropertiesService.getScriptProperties().getProperty("wsID"));
+  const ws = ss.getSheetByName("Data");
 
   ws.appendRow([
     data.name,
@@ -21,7 +22,7 @@ function appendData(data) {
 }
 
 function getDropdownArray() {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const ss = SpreadsheetApp.openById(PropertiesService.getScriptProperties().getProperty("wsID"));
   const ws = ss.getSheetByName("Aux");
 
   return ws.getRange(2, 1, ws.getLastRow() - 1, 3).getValues();
@@ -30,7 +31,7 @@ function getDropdownArray() {
 
 function getQtyInStock(category, itemName, itemType) {
 
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const ss = SpreadsheetApp.openById(PropertiesService.getScriptProperties().getProperty("wsID"));
   const ws = ss.getSheetByName("Inventory");
   const data = ws.getRange(2, 1, ws.getLastRow() - 1, 4).getValues();
 
